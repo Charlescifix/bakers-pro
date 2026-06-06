@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: bakerprofit_postgres
+    environment:
+      POSTGRES_DB: bakerprofit
+      POSTGRES_USER: bakerprofit
+      POSTGRES_PASSWORD: bakerprofit
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: bakerprofit_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
