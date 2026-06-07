@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.v1 import (
@@ -6,12 +7,21 @@ from app.api.v1 import (
     labels, orders, packaging, production, products, quotes, recipes, reports,
     sales_channels, shopping_lists, suppliers,
 )
+from app.core.config import settings
 from app.core.errors import BakerProfitError
 
 app = FastAPI(
     title="BakerProfit OS",
     description="Pricing, profit, and order planner for small bakers.",
     version="0.1.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

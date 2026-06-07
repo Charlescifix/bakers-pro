@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --color-brand: #C97D2E;
+  --color-brand-dark: #A5631F;
+  --color-brand-light: #F2C57A;
+  --color-warm-bg: #FFFDF9;
+  --color-cream: #FDF6EC;
+  --color-baker-border: #E8DDD0;
+  --color-baker-text: #1C1209;
+  --color-baker-muted: #6B5744;
+}
+
+:root {
+  color: #1C1209;
+  background: #FFFDF9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, select, textarea { font: inherit; }
+
+.focus-ring:focus-visible {
+  outline: 3px solid rgba(201, 125, 46, 0.35);
+  outline-offset: 2px;
+}
+
+.table-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .print-card { box-shadow: none !important; border: 1px solid #E8DDD0; }
+}

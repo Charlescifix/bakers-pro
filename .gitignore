@@ -38,6 +38,11 @@ logs/
 # ── Markdown / spec docs ──────────────────────────────────────────────────────
 *.md
 
+# ── Frontend build artifacts ─────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
 # ── IDEs ─────────────────────────────────────────────────────────────────────
 .idea/
 .vscode/
