@@ -3,6 +3,10 @@ frontend:
   phases:
     preBuild:
       commands:
+        - nvm install 22
+        - nvm use 22
+        - node --version
+        - npm --version
         - cd frontend && npm ci
     build:
       commands:
@@ -14,3 +18,7 @@ frontend:
   cache:
     paths:
       - frontend/node_modules/**/*
+  redirects:
+    - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>'
+      target: /index.html
+      status: '200'
