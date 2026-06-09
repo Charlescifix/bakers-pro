@@ -4,6 +4,7 @@ import { pageConfigs } from './data/mock';
 import Dashboard from './pages/Dashboard';
 import GenericPage from './pages/GenericPage';
 import { LoginPage, RegisterPage } from './pages/AuthPages';
+import { UserProvider } from './lib/user-context';
 
 function ConfigPage({ slug }: { slug: keyof typeof pageConfigs }) {
   return <GenericPage config={pageConfigs[slug]} />;
@@ -15,6 +16,7 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
+    <UserProvider>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -41,5 +43,6 @@ export default function App() {
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
+    </UserProvider>
   );
 }

@@ -38,5 +38,14 @@ def refresh(data: RefreshRequest, db: Session = Depends(get_db)):
 
 
 @router.get("/me", response_model=MeResponse)
-def me(user: User = Depends(get_current_user)):
-    return user
+def me(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    from app.models.tenant import Tenant
+    tenant = db.query(Tenant).filter(Tenant.id == user.tenant_id).first()
+    return {
+        "id": user.id,
+        "tenant_id": user.tenant_id,
+        "tenant_name": tenant.name if tenant else "",
+        "full_name": user.full_name,
+        "email": user.email,
+        "role": user.role,
+    }

@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '../lib/user-context';
 import {
   BarChart2,
   Bell,
@@ -70,7 +71,14 @@ function SidebarLink({ label, href, icon }: { label: string; href: string; icon:
 export function AppShell() {
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useUser();
   let currentSection = '';
+
+  const displayName = user?.full_name ?? '…';
+  const initials = user?.full_name
+    ? user.full_name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+    : '…';
+  const bakeryName = user?.tenant_name ?? 'BakerProfit OS';
 
   function handleLogout() {
     localStorage.clear();
@@ -117,7 +125,7 @@ export function AppShell() {
               <Menu className="h-5 w-5" />
             </button>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Bold Munch</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">{bakeryName}</p>
               <h1 className="text-xl font-bold tracking-tight md:text-2xl">{active?.label ?? 'Dashboard'}</h1>
             </div>
           </div>
@@ -130,13 +138,12 @@ export function AppShell() {
           <div className="flex items-center gap-3">
             <button className="focus-ring relative rounded-xl border border-baker-border bg-white p-2">
               <Bell className="h-5 w-5" />
-              <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">2</span>
             </button>
             <div className="hidden items-center gap-3 rounded-xl border border-baker-border bg-white px-3 py-2 sm:flex">
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-cream text-sm font-bold text-brand">CN</div>
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-cream text-sm font-bold text-brand">{initials}</div>
               <div className="text-sm">
-                <p className="font-semibold">Charles N</p>
-                <p className="text-xs text-baker-muted">Owner</p>
+                <p className="font-semibold">{displayName}</p>
+                <p className="text-xs capitalize text-baker-muted">{user?.role ?? '…'}</p>
               </div>
             </div>
           </div>

@@ -34,6 +34,7 @@ class RefreshRequest(BaseModel):
 class MeResponse(BaseModel):
     id: uuid.UUID
     tenant_id: uuid.UUID
+    tenant_name: str
     full_name: str
     email: str
     role: str

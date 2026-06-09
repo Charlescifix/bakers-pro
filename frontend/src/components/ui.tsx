@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import React from 'react';
 import { AlertTriangle, CheckCircle2, Info, XCircle } from 'lucide-react';
 import { cx } from '../lib/format';
 
@@ -6,15 +7,22 @@ export function Card({ children, className = '' }: { children: ReactNode; classN
   return <section className={cx('rounded-2xl border border-baker-border bg-white p-5 shadow-sm', className)}>{children}</section>;
 }
 
-export function Button({ children, variant = 'primary' }: { children: ReactNode; variant?: 'primary' | 'secondary' | 'danger' }) {
+export function Button({
+  children,
+  variant = 'primary',
+  className,
+  ...rest
+}: { children: ReactNode; variant?: 'primary' | 'secondary' | 'danger'; className?: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       className={cx(
-        'focus-ring inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition',
+        'focus-ring inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition disabled:opacity-60',
         variant === 'primary' && 'bg-brand text-white hover:bg-brand-dark',
         variant === 'secondary' && 'border border-baker-border bg-white text-baker-text hover:bg-cream',
         variant === 'danger' && 'bg-red-600 text-white hover:bg-red-700',
+        className,
       )}
+      {...rest}
     >
       {children}
     </button>
