@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '../lib/user-context';
 import {
@@ -80,6 +81,8 @@ export function AppShell() {
     : '…';
   const bakeryName = user?.tenant_name ?? 'BakerProfit OS';
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   function handleLogout() {
     localStorage.clear();
     navigate('/login', { replace: true });
@@ -121,7 +124,7 @@ export function AppShell() {
       <div className="xl:pl-72">
         <header className="no-print sticky top-0 z-20 flex h-20 items-center justify-between border-b border-baker-border bg-warm-bg/90 px-4 backdrop-blur md:px-8">
           <div className="flex items-center gap-3">
-            <button className="focus-ring rounded-lg border border-baker-border bg-white p-2 xl:hidden" aria-label="Open menu">
+            <button onClick={() => setDrawerOpen(true)} className="focus-ring rounded-lg border border-baker-border bg-white p-2 xl:hidden" aria-label="Open menu">
               <Menu className="h-5 w-5" />
             </button>
             <div>
@@ -153,6 +156,54 @@ export function AppShell() {
           <Outlet />
         </main>
       </div>
+
+      {drawerOpen && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/40 xl:hidden" onClick={() => setDrawerOpen(false)} />
+          <aside className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-baker-border bg-white xl:hidden">
+            <div className="flex h-20 items-center gap-3 border-b border-baker-border px-5">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-brand text-lg font-black text-white shadow-sm">BP</div>
+              <div className="flex-1">
+                <p className="text-base font-extrabold tracking-tight">BakerProfit OS</p>
+                <p className="text-xs text-baker-muted">Never undercharge again</p>
+              </div>
+              <button onClick={() => setDrawerOpen(false)} className="rounded-lg p-1 text-baker-muted hover:bg-cream" aria-label="Close menu">
+                ✕
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto px-4 py-5">
+              {(() => {
+                let sec = '';
+                return navItems.map((item) => {
+                  const showSec = item.section && item.section !== sec;
+                  if (item.section) sec = item.section;
+                  return (
+                    <div key={item.href}>
+                      {showSec ? <p className="mb-2 mt-5 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-baker-muted/70">{item.section}</p> : null}
+                      <NavLink
+                        to={item.href}
+                        onClick={() => setDrawerOpen(false)}
+                        className={({ isActive }) =>
+                          cx('focus-ring flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition',
+                            isActive ? 'bg-brand text-white shadow-sm' : 'text-baker-muted hover:bg-cream hover:text-baker-text')
+                        }
+                      >
+                        {(() => { const Icon = icons[item.icon as IconName] ?? Home; return <Icon className="h-4 w-4 shrink-0" />; })()}
+                        <span>{item.label}</span>
+                      </NavLink>
+                    </div>
+                  );
+                });
+              })()}
+            </nav>
+            <div className="border-t border-baker-border p-4">
+              <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-baker-muted hover:bg-cream">
+                <LogOut className="h-4 w-4" /> Logout
+              </button>
+            </div>
+          </aside>
+        </>
+      )}
 
       <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-baker-border bg-white xl:hidden">
         {mobileItems.map((item) => {
