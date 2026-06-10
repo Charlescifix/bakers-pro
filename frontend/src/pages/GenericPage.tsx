@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Code2, Filter, Loader2, PanelRightOpen, Plus, Search, X } from 'lucide-react';
+import { Filter, Loader2, PanelRightOpen, Plus, Search, X } from 'lucide-react';
 import { Badge, Button, Card, PageHeader } from '../components/ui';
 import type { FormField, PageConfig } from '../data/mock';
 import { api } from '../lib/api';
@@ -291,18 +291,6 @@ export default function GenericPage({ config }: { config: PageConfig }) {
         </Card>
 
         <aside className="space-y-4">
-          <Card>
-            <div className="mb-3 flex items-center gap-2">
-              <Code2 className="h-5 w-5 text-brand" />
-              <h3 className="font-bold text-sm">Live endpoints</h3>
-            </div>
-            <div className="space-y-2">
-              {config.api.map((endpoint) => (
-                <code key={endpoint} className="block rounded-lg bg-baker-text px-3 py-2 text-xs text-white">{endpoint}</code>
-              ))}
-            </div>
-          </Card>
-
           <Card>
             <h3 className="font-bold text-sm">{liveRows.length} record{liveRows.length !== 1 ? 's' : ''} loaded</h3>
             {liveRows.length > 0 && (
