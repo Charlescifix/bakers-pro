@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Filter, Loader2, PanelRightOpen, Plus, Search, X } from 'lucide-react';
 import { Badge, Button, Card, PageHeader } from '../components/ui';
 import type { FormField, PageConfig } from '../data/mock';
 import { api } from '../lib/api';
+import { extractApiError } from '../lib/api-errors';
 
 function toneFor(value: string) {
   const t = value.toLowerCase();
@@ -59,8 +60,7 @@ function CreateModal({
       onCreated();
       onClose();
     } catch (err: unknown) {
-      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
-      setError(typeof detail === 'string' ? detail : 'Save failed. Check required fields.');
+      setError(extractApiError(err));
     } finally {
       setSaving(false);
     }
@@ -118,7 +118,13 @@ function CreateModal({
   );
 }
 
-export default function GenericPage({ config }: { config: PageConfig }) {
+export default function GenericPage({
+  config,
+  renderCreateModal,
+}: {
+  config: PageConfig;
+  renderCreateModal?: (onClose: () => void, onCreated: () => void) => React.ReactNode;
+}) {
   const [search, setSearch] = useState('');
   const [liveRows, setLiveRows] = useState<Array<Record<string, string>>>([]);
   const [loading, setLoading] = useState(true);
@@ -304,7 +310,9 @@ export default function GenericPage({ config }: { config: PageConfig }) {
       </div>
 
       {showCreate && (
-        <CreateModal config={config} onClose={() => setShowCreate(false)} onCreated={loadData} />
+        renderCreateModal
+          ? renderCreateModal(() => setShowCreate(false), loadData)
+          : <CreateModal config={config} onClose={() => setShowCreate(false)} onCreated={loadData} />
       )}
     </div>
   );

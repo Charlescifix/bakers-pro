@@ -3,6 +3,7 @@ import { AppShell } from './components/AppShell';
 import { pageConfigs } from './data/mock';
 import Dashboard from './pages/Dashboard';
 import GenericPage from './pages/GenericPage';
+import QuoteBuilderModal from './pages/QuoteBuilderModal';
 import { LoginPage, RegisterPage } from './pages/AuthPages';
 import { UserProvider } from './lib/user-context';
 
@@ -30,7 +31,14 @@ export default function App() {
         <Route path="products" element={<ConfigPage slug="products" />} />
         <Route path="customers" element={<ConfigPage slug="customers" />} />
         <Route path="sales-channels" element={<ConfigPage slug="sales-channels" />} />
-        <Route path="quotes" element={<ConfigPage slug="quotes" />} />
+        <Route path="quotes" element={
+          <GenericPage
+            config={pageConfigs['quotes']}
+            renderCreateModal={(onClose, onCreated) => (
+              <QuoteBuilderModal onClose={onClose} onCreated={onCreated} />
+            )}
+          />
+        } />
         <Route path="orders" element={<ConfigPage slug="orders" />} />
         <Route path="production" element={<ConfigPage slug="production" />} />
         <Route path="shopping-lists" element={<ConfigPage slug="shopping-lists" />} />
