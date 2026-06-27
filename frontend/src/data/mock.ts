@@ -186,7 +186,6 @@ export const pageConfigs: Record<string, PageConfig> = {
       Status: item.is_active ? 'active' : 'inactive',
     }),
     deleteEndpoint: (id) => `/recipes/${id}`,
-    createNote: 'Recipes require at least one ingredient. Use the full recipe builder coming soon, or contact support.',
   },
   products: {
     title: 'Products',
@@ -206,12 +205,7 @@ export const pageConfigs: Record<string, PageConfig> = {
       '# Variants': String((item.variants as unknown[])?.length ?? 0),
       Status: item.is_active ? 'active' : 'inactive',
     }),
-    createEndpoint: '/products',
-    createFields: [
-      { label: 'Product Name', key: 'name', required: true },
-      { label: 'Description', key: 'description', type: 'textarea' },
-      { label: 'Category', key: 'category' },
-    ],
+    deleteEndpoint: (id) => `/products/${id}`,
   },
   customers: {
     title: 'Customers',
@@ -295,7 +289,6 @@ export const pageConfigs: Record<string, PageConfig> = {
       'Margin %': item.profit_margin_percent ? `${Number(item.profit_margin_percent).toFixed(1)}%` : '—',
       Created: fmtDate(item.created_at),
     }),
-    createNote: 'Quotes require customers, products and variants. Set those up first, then create quotes from the full quote builder.',
   },
   orders: {
     title: 'Orders',
@@ -380,7 +373,6 @@ export const pageConfigs: Record<string, PageConfig> = {
       Confidence: item.mapping_confidence_score ? `${Math.round(Number(item.mapping_confidence_score) * 100)}%` : '—',
       Created: fmtDate(item.created_at),
     }),
-    createNote: 'Use the Upload File button to upload a CSV, XLSX or PDF file.',
   },
   reports: {
     title: 'Reports',

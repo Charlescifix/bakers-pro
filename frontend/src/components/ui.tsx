@@ -54,7 +54,7 @@ export function SeverityIcon({ severity }: { severity: string }) {
   return <Info className="h-5 w-5 text-blue-700" />;
 }
 
-export function PageHeader({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action: ReactNode }) {
+export function PageHeader({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: ReactNode }) {
   return (
     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>

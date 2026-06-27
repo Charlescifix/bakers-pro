@@ -4,6 +4,10 @@ import { pageConfigs } from './data/mock';
 import Dashboard from './pages/Dashboard';
 import GenericPage from './pages/GenericPage';
 import QuoteBuilderModal from './pages/QuoteBuilderModal';
+import RecipeBuilderModal from './pages/RecipeBuilderModal';
+import ProductBuilderModal from './pages/ProductBuilderModal';
+import ImportUploadModal from './pages/ImportUploadModal';
+import SettingsPage from './pages/SettingsPage';
 import { LoginPage, RegisterPage } from './pages/AuthPages';
 import { UserProvider } from './lib/user-context';
 
@@ -27,8 +31,22 @@ export default function App() {
         <Route path="ingredients" element={<ConfigPage slug="ingredients" />} />
         <Route path="packaging" element={<ConfigPage slug="packaging" />} />
         <Route path="suppliers" element={<ConfigPage slug="suppliers" />} />
-        <Route path="recipes" element={<ConfigPage slug="recipes" />} />
-        <Route path="products" element={<ConfigPage slug="products" />} />
+        <Route path="recipes" element={
+          <GenericPage
+            config={pageConfigs['recipes']}
+            renderCreateModal={(onClose, onCreated) => (
+              <RecipeBuilderModal onClose={onClose} onCreated={onCreated} />
+            )}
+          />
+        } />
+        <Route path="products" element={
+          <GenericPage
+            config={pageConfigs['products']}
+            renderCreateModal={(onClose, onCreated) => (
+              <ProductBuilderModal onClose={onClose} onCreated={onCreated} />
+            )}
+          />
+        } />
         <Route path="customers" element={<ConfigPage slug="customers" />} />
         <Route path="sales-channels" element={<ConfigPage slug="sales-channels" />} />
         <Route path="quotes" element={
@@ -42,12 +60,19 @@ export default function App() {
         <Route path="orders" element={<ConfigPage slug="orders" />} />
         <Route path="production" element={<ConfigPage slug="production" />} />
         <Route path="shopping-lists" element={<ConfigPage slug="shopping-lists" />} />
-        <Route path="imports" element={<ConfigPage slug="imports" />} />
+        <Route path="imports" element={
+          <GenericPage
+            config={pageConfigs['imports']}
+            renderCreateModal={(onClose, onCreated) => (
+              <ImportUploadModal onClose={onClose} onCreated={onCreated} />
+            )}
+          />
+        } />
         <Route path="reports" element={<ConfigPage slug="reports" />} />
         <Route path="intelligence" element={<ConfigPage slug="intelligence" />} />
         <Route path="allergens" element={<ConfigPage slug="allergens" />} />
         <Route path="compliance" element={<ConfigPage slug="compliance" />} />
-        <Route path="settings" element={<ConfigPage slug="settings" />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
