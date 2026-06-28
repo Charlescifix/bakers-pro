@@ -42,7 +42,7 @@ def create_ingredient(db: Session, tenant_id: uuid.UUID, data: IngredientCreate)
         notes=data.notes,
     )
     db.add(ingredient)
-    # Record initial price history
+    db.flush()  # assigns ingredient.id before logging price history
     _add_price_history(db, ingredient, "manual")
     db.commit()
     db.refresh(ingredient)

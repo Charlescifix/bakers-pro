@@ -47,6 +47,22 @@ def _job_to_response(job) -> ImportJobResponse:
     )
 
 
+@router.get("", response_model=list[ImportJobResponse])
+def list_jobs(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    from app.models.import_job import ImportJob
+    jobs = (
+        db.query(ImportJob)
+        .filter(ImportJob.tenant_id == user.tenant_id)
+        .order_by(ImportJob.created_at.desc())
+        .limit(50)
+        .all()
+    )
+    return [_job_to_response(j) for j in jobs]
+
+
 @router.post("/upload", response_model=ImportJobResponse, status_code=201)
 async def upload(
     file: UploadFile = File(...),

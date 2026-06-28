@@ -158,7 +158,6 @@ export default function ProductBuilderModal({
                       <label className="block text-xs font-semibold">
                         Variant Name *
                         <input
-                          required
                           value={row.name}
                           onChange={(e) => updateVariant(idx, 'name', e.target.value)}
                           placeholder="e.g. 6-inch"

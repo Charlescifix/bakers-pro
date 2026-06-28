@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { Loader2, Upload, X } from 'lucide-react';
 import { Button } from '../components/ui';
-import { api } from '../lib/api';
-import { extractApiError } from '../lib/api-errors';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1';
 
 export default function ImportUploadModal({
   onClose,
@@ -30,13 +30,22 @@ export default function ImportUploadModal({
     try {
       const form = new FormData();
       form.append('file', file);
-      await api.post('/imports/upload', form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const token = localStorage.getItem('access_token');
+      const resp = await fetch(`${API_BASE}/imports/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token ?? ''}` },
+        body: form,
       });
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => null);
+        const detail = body?.detail;
+        const msg = typeof detail === 'string' ? detail : detail?.[0]?.msg ?? 'Upload failed.';
+        throw new Error(msg);
+      }
       onCreated();
       onClose();
     } catch (err: unknown) {
-      setError(extractApiError(err));
+      setError(err instanceof Error ? err.message : 'Upload failed.');
     } finally {
       setUploading(false);
     }

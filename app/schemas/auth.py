@@ -31,6 +31,10 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
+class MeUpdateRequest(BaseModel):
+    full_name: str
+
+
 class MeResponse(BaseModel):
     id: uuid.UUID
     tenant_id: uuid.UUID
